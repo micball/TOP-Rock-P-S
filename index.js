@@ -35,7 +35,6 @@ function getPlayerSelection(){
     }
 }
 
-let winner;
 function getWinner(playerSelection, computerSelection) {
     let temp;
     switch (computerSelection) {
@@ -99,7 +98,8 @@ function playAgainInquiry() {
 function playGame(){
     getPlayerSelection();
     getComputerChoice();
-    getWinner();
+    getWinner(playerSelection, computerSelection);
+    playAgainInquiry();
 }
 
 playGame();
