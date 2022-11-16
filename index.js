@@ -35,6 +35,9 @@ function getPlayerSelection(){
     }
 }
 
+let playerWinCount = 0;
+let computerWinCount = 0;
+let tieCount = 0;
 function getWinner(playerSelection, computerSelection) {
     let temp;
     switch (computerSelection) {
@@ -80,26 +83,46 @@ function getWinner(playerSelection, computerSelection) {
     switch (temp) {
         case "playerWin":
             console.log(`You win! ${playerSelection} beats ${computerSelection.toLowerCase()}`);
+            playerWinCount++;
             break;
         case "computerWin":
             console.log(`You lose! ${computerSelection} beats ${playerSelection.toLowerCase()}`);
+            computerWinCount++;
             break;
         case "tie":
             console.log(`It was a tie! You both picked ${playerSelection.toLowerCase()}! :-0`)
+            tieCount++;
     }
 }
 
 function playAgainInquiry() {
     let temp = (prompt("Would you like to play again? yes/no")).toLowerCase();
-    temp == "yes" ? playGame() : console.log("Okay, thanks for playing with me!");
+    temp == "yes" ? game() : console.log("Okay, thanks for playing with me!");
 
 }
 
-function playGame(){
+function playRound(){
     getPlayerSelection();
     getComputerChoice();
     getWinner(playerSelection, computerSelection);
-    playAgainInquiry();
 }
 
-playGame();
+function game(){
+    tieCount = 0;
+    playerWinCount = 0;
+    computerWinCount = 0;
+    for (let i = 0; i < 5; i++){
+        playRound();
+        console.log(`Current Scores:
+        Player: ${playerWinCount}
+        Computer: ${computerWinCount}
+        Ties: ${tieCount}`)
+    }
+    playerWinCount > computerWinCount ? console.log(`You win!  You beat the computer ${playerWinCount} to ${computerWinCount}!`)
+        : computerWinCount > playerWinCount ? console.log(`The computer wins!  It beat you ${computerWinCount} to ${playerWinCount}!`)
+        : console.log(`It was a tie! You both won ${playerWinCount} times!
+        Guess you'll have to play again!`)
+    playAgainInquiry()
+}
+
+game();
