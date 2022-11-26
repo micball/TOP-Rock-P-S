@@ -107,6 +107,8 @@ function playRound(){
     getWinner(playerSelection, computerSelection);
 }
 
+// RPS Challenge ONe - make a function that plays five rounds:
+/*
 function game(){
     tieCount = 0;
     playerWinCount = 0;
@@ -126,3 +128,5 @@ function game(){
 }
 
 game();
+
+*/
