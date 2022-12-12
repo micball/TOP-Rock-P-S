@@ -107,6 +107,30 @@ function playRound(){
     getWinner(playerSelection, computerSelection);
 }
 
+let body = document.querySelector('body');
+const div = document.createElement('div');
+body.appendChild(div);
+console.log(document.querySelector('body'));
+const rockButton = document.createElement('button');
+const paperButton = document.createElement('button');
+const scissorsButton = document.createElement('button');
+
+div.appendChild(rockButton);
+div.appendChild(paperButton);
+div.appendChild(scissorsButton);
+
+rockButton.setAttribute('id', 'rockButton');
+paperButton.setAttribute('id', 'paperButton');
+scissorsButton.setAttribute('id', 'scissorsButton');
+
+rockButton.classList.toggle('button');
+paperButton.classList.toggle('button');
+scissorsButton.classList.toggle('button');
+
+rockButton.textContent = 'Rock';
+paperButton.textContent = 'Paper'
+scissorsButton.textContent = 'Scissors';
+
 // RPS Challenge ONe - make a function that plays five rounds:
 /*
 function game(){
