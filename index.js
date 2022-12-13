@@ -1,4 +1,10 @@
 let computerSelection;
+let round = 0;
+let playerWinCount = 0;
+let computerWinCount = 0;
+let tieCount = 0;
+let playerSelection;
+
 function getComputerChoice(){
     let temp = Math.floor(Math.random()*10);
     if (temp >= 0 && temp <=2){
@@ -17,27 +23,14 @@ function getComputerChoice(){
     
 }
 
-let playerSelection;
-function getPlayerSelection(){
-    temp = prompt("Do you choose rock, paper, or scissors?").toLowerCase();
-    if (temp == "rock") {
-        playerSelection = "Rock";
-        return;
-    } else if (temp == "paper") {
-        playerSelection = "Paper";
-        return;
-    } else if (temp == "scissors") {
-        playerSelection = "Scissors";
-        return;
-    } else {
-        console.log("That's not an option!  Try again:");
-        getPlayerSelection();
-    }
-}
+function resetCounts(){
+    round = 0;
+    playerWinCount = 0;
+    computerWinCount = 0;
+    tieCount = 0;
+    playerSelection = "";
+};
 
-let playerWinCount = 0;
-let computerWinCount = 0;
-let tieCount = 0;
 function getWinner(playerSelection, computerSelection) {
     let temp;
     switch (computerSelection) {
@@ -82,15 +75,15 @@ function getWinner(playerSelection, computerSelection) {
     }
     switch (temp) {
         case "playerWin":
-            console.log(`You win! ${playerSelection} beats ${computerSelection.toLowerCase()}`);
+            roundResultDiv.textContent = `You win! ${playerSelection} beats ${computerSelection.toLowerCase()}`;
             playerWinCount++;
             break;
         case "computerWin":
-            console.log(`You lose! ${computerSelection} beats ${playerSelection.toLowerCase()}`);
+            roundResultDiv.textContent = `You lose! ${computerSelection} beats ${playerSelection.toLowerCase()}`;
             computerWinCount++;
             break;
         case "tie":
-            console.log(`It was a tie! You both picked ${playerSelection.toLowerCase()}! :-0`)
+            roundResultDiv.textContent = `It was a tie! You both picked ${playerSelection.toLowerCase()}! :-0`;
             tieCount++;
     }
 }
@@ -102,55 +95,127 @@ function playAgainInquiry() {
 }
 
 function playRound(){
-    getPlayerSelection();
     getComputerChoice();
     getWinner(playerSelection, computerSelection);
 }
 
+/// Create elements of the screen to be put in by later function
+
+// Universal Elements;
 let body = document.querySelector('body');
 const div = document.createElement('div');
-body.appendChild(div);
-console.log(document.querySelector('body'));
+
+// Gameplay Elements:
 const rockButton = document.createElement('button');
 const paperButton = document.createElement('button');
 const scissorsButton = document.createElement('button');
+    rockButton.setAttribute('id', 'rockButton');
+    paperButton.setAttribute('id', 'paperButton');
+    scissorsButton.setAttribute('id', 'scissorsButton');
+    rockButton.classList.toggle('button');
+    paperButton.classList.toggle('button');
+    scissorsButton.classList.toggle('button');
+    rockButton.textContent = 'Rock';
+    paperButton.textContent = 'Paper'
+    scissorsButton.textContent = 'Scissors';
+const roundResultDiv = document.createElement('div');
+    roundResultDiv.textContent = ``;
+const scoreBoard = document.createElement('div');
+    scoreBoard.classList.toggle('scoreBoard');
+const playerScoreBox = document.createElement('p');
+const computerScoreBox = document.createElement('p');
+const drawScoreBox = document.createElement('p');
 
-div.appendChild(rockButton);
-div.appendChild(paperButton);
-div.appendChild(scissorsButton);
+    // Finishing Screen Elements;
+const finishingDiv = document.createElement('div');
+finishingDiv.classList.toggle('finishDiv');
+const playAgainButton = document.createElement('button');
+    playAgainButton.setAttribute('id', 'reset');
+    playAgainButton.textContent = "Reset?";
 
-rockButton.setAttribute('id', 'rockButton');
-paperButton.setAttribute('id', 'paperButton');
-scissorsButton.setAttribute('id', 'scissorsButton');
+    console.log(playAgainButton);
 
-rockButton.classList.toggle('button');
-paperButton.classList.toggle('button');
-scissorsButton.classList.toggle('button');
-
-rockButton.textContent = 'Rock';
-paperButton.textContent = 'Paper'
-scissorsButton.textContent = 'Scissors';
-
-// RPS Challenge ONe - make a function that plays five rounds:
-/*
-function game(){
-    tieCount = 0;
-    playerWinCount = 0;
-    computerWinCount = 0;
-    for (let i = 0; i < 5; i++){
-        playRound();
-        console.log(`Current Scores:
-        Player: ${playerWinCount}
-        Computer: ${computerWinCount}
-        Ties: ${tieCount}`)
-    }
-    playerWinCount > computerWinCount ? console.log(`You win!  You beat the computer ${playerWinCount} to ${computerWinCount}!`)
-        : computerWinCount > playerWinCount ? console.log(`The computer wins!  It beat you ${computerWinCount} to ${playerWinCount}!`)
-        : console.log(`It was a tie! You both won ${playerWinCount} times!
-        Guess you'll have to play again!`)
-    playAgainInquiry()
+function buildFinishingScreen(){
+    body.appendChild(finishingDiv);
+    //div.appendChild(/* the big display of who wins */);
+    //div.appendChild(/* the scoreboard */);
+    finishingDiv.appendChild(playAgainButton);
 }
 
-game();
+function definePlayScreen(){
+    if (counter => 0 && counter <=5){
+        body.appendChild(div);
 
-*/
+        div.appendChild(rockButton);
+        div.appendChild(paperButton);
+        div.appendChild(scissorsButton);
+
+        div.appendChild(roundResultDiv);
+
+        div.appendChild(scoreBoard);
+        scoreBoard.appendChild(playerScoreBox);
+        scoreBoard.appendChild(computerScoreBox);
+        scoreBoard.appendChild(drawScoreBox);
+
+        // Create event listeners for RPS buttons
+            const rockEvent = document.querySelector('#rockButton');
+            rockEvent.onclick = () => {
+                playerSelection = 'Rock';
+                round++;
+                playRound();
+                roundCheck();
+            };
+            const paperEvent = document.querySelector('#paperButton');
+            paperEvent.onclick = () => {
+                playerSelection= "Paper";
+                round++;
+                playRound();
+                roundCheck();
+            }
+            const scissorsEvent = document.querySelector('#scissorsButton');
+            scissorsEvent.onclick = () => {
+                playerSelection= "Scissors";
+                round++;
+                playRound();
+                roundCheck();
+            }
+        }
+        }
+
+// removes the DOM elements of the game and replaces them with 
+function loadFinishingScreen(){
+    body.appendChild(finishingDiv);
+    finishingDiv.appendChild(playAgainButton);
+    const reset = document.querySelector('#reset');
+reset.onclick = () => {
+    resetCounts();
+    roundCheck();
+    body.removeChild(finishingDiv);
+    setScoreBoardNums();
+    roundResultDiv.textContent = "";
+    definePlayScreen();
+};
+
+}
+
+function setScoreBoardNums() {
+    playerScoreBox.textContent = playerWinCount;
+    computerScoreBox.textContent = computerWinCount;
+    drawScoreBox.textContent = tieCount;
+}
+
+// This function controls the DOM manipulation between regular rounds, and the end
+function roundCheck() {
+    if (round >= 5){
+        body.removeChild(div);
+        loadFinishingScreen();
+    } else if (round <= 5 && round > 0) {
+        setScoreBoardNums();
+    } else if (round ==0) {
+        definePlayScreen();
+    }
+}
+
+
+resetCounts();
+roundCheck();
