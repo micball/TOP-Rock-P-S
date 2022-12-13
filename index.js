@@ -132,20 +132,14 @@ finishingDiv.classList.toggle('finishDiv');
 const playAgainButton = document.createElement('button');
     playAgainButton.setAttribute('id', 'reset');
     playAgainButton.textContent = "Reset?";
+const announcer = document.createElement('div');
+    announcer.setAttribute('id', 'winner');
 
-    console.log(playAgainButton);
-
-function buildFinishingScreen(){
-    body.appendChild(finishingDiv);
-    //div.appendChild(/* the big display of who wins */);
-    //div.appendChild(/* the scoreboard */);
-    finishingDiv.appendChild(playAgainButton);
-}
 
 function definePlayScreen(){
     if (counter => 0 && counter <=5){
         body.appendChild(div);
-
+        
         div.appendChild(rockButton);
         div.appendChild(paperButton);
         div.appendChild(scissorsButton);
@@ -185,6 +179,13 @@ function definePlayScreen(){
 // removes the DOM elements of the game and replaces them with 
 function loadFinishingScreen(){
     body.appendChild(finishingDiv);
+    if (playerWinCount > computerWinCount) {
+        announcer.textContent = `You win!`;
+    } else {
+        announcer.textContent = `The computer wins!`;
+    }
+    finishingDiv.appendChild(announcer);
+    finishingDiv.appendChild(scoreBoard);
     finishingDiv.appendChild(playAgainButton);
     const reset = document.querySelector('#reset');
 reset.onclick = () => {
@@ -199,20 +200,27 @@ reset.onclick = () => {
 }
 
 function setScoreBoardNums() {
-    playerScoreBox.textContent = playerWinCount;
-    computerScoreBox.textContent = computerWinCount;
-    drawScoreBox.textContent = tieCount;
+    playerScoreBox.textContent = `Your Score: ${playerWinCount}`;
+    computerScoreBox.textContent = `Computer's Score: ${computerWinCount}`;
+    drawScoreBox.textContent = `Number of Ties: ${tieCount}`;
 }
 
 // This function controls the DOM manipulation between regular rounds, and the end
 function roundCheck() {
-    if (round >= 5){
+    if (round == 0){
+        definePlayScreen();
+    } else if (playerWinCount >= 5){
         body.removeChild(div);
         loadFinishingScreen();
-    } else if (round <= 5 && round > 0) {
+        console.log('plyaer wins!')
+        //set finishing screen to display player wins info
+    } else if (computerWinCount >= 5) {
+        body.removeChild(div);
+        loadFinishingScreen();
+        console.log('computer wins!')
+        // set finishing screen to display computer wins info
+    } else {
         setScoreBoardNums();
-    } else if (round ==0) {
-        definePlayScreen();
     }
 }
 
