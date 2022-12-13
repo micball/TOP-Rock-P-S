@@ -185,6 +185,7 @@ function loadFinishingScreen(){
         announcer.textContent = `The computer wins!`;
     }
     finishingDiv.appendChild(announcer);
+    setScoreBoardNums();
     finishingDiv.appendChild(scoreBoard);
     finishingDiv.appendChild(playAgainButton);
     const reset = document.querySelector('#reset');
@@ -196,7 +197,6 @@ reset.onclick = () => {
     roundResultDiv.textContent = "";
     definePlayScreen();
 };
-
 }
 
 function setScoreBoardNums() {
@@ -213,12 +213,10 @@ function roundCheck() {
         body.removeChild(div);
         loadFinishingScreen();
         console.log('plyaer wins!')
-        //set finishing screen to display player wins info
     } else if (computerWinCount >= 5) {
         body.removeChild(div);
         loadFinishingScreen();
         console.log('computer wins!')
-        // set finishing screen to display computer wins info
     } else {
         setScoreBoardNums();
     }
